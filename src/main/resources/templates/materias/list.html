@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Registro Academico</title>
+</head>
+<body>
+<h1>Lista de Materias</h1>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Codigo</th>
+        <th>Descripcion</th>
+    </tr>
+    <tr th:each="materia : ${materias}">
+        <td th:text="${materia.id}">123</td>
+        <td th:text="${materia.nombre}"> Spring in Action</td>
+        <td th:text="${materia.descripcion}">Wrox</td>
+    </tr>
+</table>
+
+</body>
+</html>
