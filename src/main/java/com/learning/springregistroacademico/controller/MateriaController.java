@@ -1,52 +1,45 @@
 package com.learning.springregistroacademico.controller;
 
 import com.learning.springregistroacademico.domain.Materia;
-import com.learning.springregistroacademico.service.MateriaService;
+import com.learning.springregistroacademico.repository.MateriaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class MateriaController {
-    //    private final MateriaRepository materiaRepository;
-    private MateriaService materiaService;
 
-//    public MateriaController(MateriaRepository materiaRepository) {
-//        this.materiaRepository = materiaRepository;
-//    }
 
-    public MateriaController(MateriaService materiaService) {
-        this.materiaService = materiaService;
+    private MateriaRepository materiaRepository;
+
+
+    public MateriaController(MateriaRepository materiaRepository) {
+
+        this.materiaRepository = materiaRepository;
     }
 
 
-    //    @RequestMapping("/materias")
-//    public String getMaterias(Model model) {
-//        model.addAttribute("materias", materiaRepository.findAll());
-//        return "materias/list";
-//    }
-
     // LIST /materias
-    @GetMapping("/materias")
-    public List<Materia> retrieveAllMaterias() {
-        return materiaService.findAll();
+    @GetMapping("jpa/materias")
+    public Iterable<Materia> retrieveAllMaterias() {
+        return materiaRepository.findAll();
 
     }
 
     // GET /materias
-    @GetMapping("/materias/{codigo}")
-    public Materia retrieveMateria(@PathVariable String codigo) {
-        return materiaService.findOneByCodigo(codigo);
+    @GetMapping("jpa/materias/{id}")
+    public Optional<Materia> retrieveMateria(@PathVariable Long id) {
+        return materiaRepository.findById(id);
 
     }
 
     //POST /materias
-    @PostMapping("/materias")
+    @PostMapping("jpa/materias")
     public ResponseEntity<Materia> createMateria(@RequestBody Materia materia) {
-        Materia materiaSaved = materiaService.save(materia);
+        Materia materiaSaved = materiaRepository.save(materia);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{codigo}").buildAndExpand(materiaSaved.
@@ -56,9 +49,9 @@ public class MateriaController {
     }
 
     // DELETE /materias
-    @DeleteMapping("/materias/{codigo}")
-    public void deleteMateria(@PathVariable String codigo) {
-        materiaService.deleteByCodigo(codigo);
+    @DeleteMapping("jpa/materias/{id}")
+    public void deleteMateria(@PathVariable Long id) {
+        materiaRepository.deleteById(id);
 
     }
 }
